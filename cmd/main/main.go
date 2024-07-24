@@ -11,8 +11,10 @@ import (
 	"github.com/HomeArchbishop/kaption/internal/ws"
 )
 
+var Version string
+
 func main() {
-	about.PrintAbout()
+	about.PrintAbout(Version)
 
 	var port string
 	flag.StringVar(&port, "port", "8080", "Define the server port")

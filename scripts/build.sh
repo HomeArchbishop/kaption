@@ -22,8 +22,14 @@ fi
 
 mkdir -p dist
 
+version=$(cat ./VERSION)
+echo "[BUILD] Kaption version: $version"
+
 echo "[BUILD] GO building..."
-go build -o ./dist/start.exe ./cmd/main
+go build -o ./dist/start.exe -ldflags "-X main.Version=$version" ./cmd/main
+
+cp ./VERSION ./dist/
+cp ./LICENSE ./dist/
 
 if $DEV_MODE; then
   if [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
