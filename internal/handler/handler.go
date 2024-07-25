@@ -116,6 +116,7 @@ func BinaryMessageHandler(msg []byte, tempDirPath string, ffmpegPath string, rec
 		timePrefixSumSecSliceMap[videoHash] = append(timePrefixSumSecSliceMap[videoHash], 0.0)
 	}
 	timePrefixSumSecSliceMap[videoHash] = append(timePrefixSumSecSliceMap[videoHash], timePrefixSumSecSliceMap[videoHash][len(timePrefixSumSecSliceMap[videoHash])-1]+tempWavDurationSec)
+	log.Printf("timePrefixSumSecSliceMap last to: [file index] %d %f", fileIndex, timePrefixSumSecSliceMap[videoHash][len(timePrefixSumSecSliceMap[videoHash])-1])
 
 	file, fileOpenErr := os.Open(tempWavPath)
 	if fileOpenErr != nil {
