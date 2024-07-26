@@ -129,7 +129,10 @@ A valid message flow can be as below:
 ... ............
 ```
 
-# Licenses
+## Known bugs
+- Inaccurate timestamps in speech recognition.
+
+## Licenses
 
 Kaption is licensed under the [MIT License](LICENSE).
 
