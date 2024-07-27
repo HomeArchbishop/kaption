@@ -3,6 +3,8 @@ package recognizer
 import (
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	vosk "github.com/HomeArchbishop/kaption/third_party/vosk/go"
 )
@@ -15,8 +17,11 @@ func SetSampleRate(rate float64) {
 }
 
 func InitModel() error {
+	executablePath, _ := os.Executable()
+	modelPath := filepath.Join(filepath.Dir(executablePath), "model")
+
 	fmt.Print("\n")
-	_model, newModelErr := vosk.NewModel("model")
+	_model, newModelErr := vosk.NewModel(modelPath)
 	fmt.Print("\n")
 	if newModelErr != nil {
 		log.Print(newModelErr)
