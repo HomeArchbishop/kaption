@@ -60,7 +60,7 @@ func BinaryMessageHandler(msg []byte, tempDirPath string, ffmpegPath string, rec
 	}
 
 	// ffmpeg convert original (.ts or others) to .wav
-	convertCmd := exec.Command("cmd", "/C", ffmpegPath, "-y", "-i", tempFilePath, tempWavPath)
+	convertCmd := exec.Command("cmd", "/C", ffmpegPath, "-y", "-i", tempFilePath, "-ar", "96000", "-ac", "1", tempWavPath)
 	if _, err := convertCmd.CombinedOutput(); err != nil {
 		log.Printf("Error executing ffmpeg (convert) (%s): %v", tempFilePath, err)
 		return

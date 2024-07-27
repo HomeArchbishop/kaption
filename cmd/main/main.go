@@ -17,12 +17,8 @@ func main() {
 	about.PrintAbout(Version)
 
 	var port string
-	var sampleRate float64
 	flag.StringVar(&port, "port", "8080", "Define the server port")
-	flag.Float64Var(&sampleRate, "s", 96000.0, "Define the sample rate")
 	flag.Parse()
-
-	recognizer.SetSampleRate(sampleRate)
 
 	if err := recognizer.InitModel(); err != nil {
 		log.Fatal("Error during model initialization: ", err)
