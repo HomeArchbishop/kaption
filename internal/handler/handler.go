@@ -124,8 +124,23 @@ func BinaryMessageHandler(msg []byte, tempDirPath string, ffmpegPath string, rec
 	}
 	defer file.Close()
 
-	buf := make([]byte, 4096)
+	var fileSize int64
+	if fileInfo, err := file.Stat(); err != nil {
+		log.Printf("Error getting file info: %v", err)
+		return
+	} else {
+		fileSize = fileInfo.Size()
+		log.Printf("file size: %d [fileindex] %d", fileSize, fileIndex)
+	}
+
 	for {
+		bufLength := 4096
+		if fileSize < int64(bufLength) {
+			bufLength = int(fileSize)
+		} else {
+			fileSize -= 4096
+		}
+		buf := make([]byte, bufLength)
 		if _, err := file.Read(buf); err != nil {
 			if err != io.EOF {
 				log.Printf("Read file into buf error %v", err)
