@@ -8,6 +8,11 @@ import (
 )
 
 var model *vosk.VoskModel = nil
+var sampleRate float64 = 96000.0
+
+func SetSampleRate(rate float64) {
+	sampleRate = rate
+}
 
 func InitModel() error {
 	fmt.Print("\n")
@@ -22,7 +27,6 @@ func InitModel() error {
 }
 
 func CreateNewRecognizer() (*vosk.VoskRecognizer, error) {
-	sampleRate := 100000.0
 	rec, newRecErr := vosk.NewRecognizer(model, sampleRate)
 	if newRecErr != nil {
 		log.Print(newRecErr)
