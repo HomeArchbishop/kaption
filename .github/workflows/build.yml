@@ -24,6 +24,10 @@ jobs:
         with:
           update: true
           install: base-devel
+        
+      - name: Ensure Go is in PATH
+        run: echo "export PATH=$PATH:/c/Go/bin" >> $GITHUB_ENV
+        shell: bash
 
       - name: Run build script in Git Bash
         shell: msys2 {0}
