@@ -26,7 +26,7 @@ version=$(cat ./VERSION)
 echo "[BUILD] Kaption version: $version"
 
 echo "[BUILD] GO building..."
-go build -o ./dist/ -ldflags "-X main.Version=$version" ./cmd/main ./cmd/update
+go build -o ./dist/ -ldflags "-X main.Version=$version" ./cmd/main
 
 mv ./dist/main$SUFFIX ./dist/start$SUFFIX
 
