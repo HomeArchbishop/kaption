@@ -19,12 +19,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Install Git Bash
-        run: |
-          choco install git
-          echo "export PATH=$PATH:/c/Program Files/Git/bin" >> $GITHUB_ENV
-        shell: bash
-
       - name: Run build script in Git Bash
         run: |
           git --version
