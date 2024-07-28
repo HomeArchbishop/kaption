@@ -23,13 +23,13 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           update: true
-          install: git, unzip, zip, tar
+          install: base-devel
 
       - name: Run build script in Git Bash
         shell: msys2 {0}
         run: |
           pacman -Syu --noconfirm
-          pacman -S --noconfirm base-devel
+          pacman -S --noconfirm git unzip zip
           sh scripts/build.sh
 
       - name: Zip dist folder
