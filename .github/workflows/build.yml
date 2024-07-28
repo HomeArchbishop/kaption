@@ -24,6 +24,12 @@ jobs:
         with:
           update: true
           install: base-devel
+
+      - name: Install Go in MSYS2
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm go
+        shell: msys2 {0}
         
       - name: Ensure Go is in PATH
         run: echo "export PATH=$PATH:/c/Go/bin" >> $GITHUB_ENV
