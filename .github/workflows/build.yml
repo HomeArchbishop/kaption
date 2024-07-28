@@ -19,28 +19,17 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Install MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          install: base-devel
-
-      - name: Install Go in MSYS2
+      - name: Install Git Bash
         run: |
-          pacman -Syu --noconfirm
-          pacman -S --noconfirm go
-        shell: msys2 {0}
-        
-      - name: Ensure Go is in PATH
-        run: echo "export PATH=$PATH:/c/Go/bin" >> $GITHUB_ENV
+          choco install git
+          echo "export PATH=$PATH:/c/Program Files/Git/bin" >> $GITHUB_ENV
         shell: bash
 
       - name: Run build script in Git Bash
-        shell: msys2 {0}
         run: |
-          pacman -Syu --noconfirm
-          pacman -S --noconfirm git unzip zip
-          sh scripts/build.sh
+          git --version
+          bash scripts/build.sh
+        shell: bash
 
       - name: Zip dist folder
         run: Compress-Archive -Path .\dist\* -DestinationPath .\dist.zip
