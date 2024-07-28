@@ -26,22 +26,26 @@ version=$(cat ./VERSION)
 echo "[BUILD] Kaption version: $version"
 
 echo "[BUILD] GO building..."
-go build -o ./dist/start.exe -ldflags "-X main.Version=$version" ./cmd/main
+go build -o ./dist/ -ldflags "-X main.Version=$version" ./cmd/main ./cmd/update
+
+mv ./dist/main$SUFFIX ./dist/start$SUFFIX
 
 cp ./VERSION ./dist/
 cp ./LICENSE ./dist/
 
-if $DEV_MODE; then
-  if [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    # DIST_PATH=$(cd dist && pwd -W | sed 's/\//\\/g')
-    # MODEL_PATH=$(cd model && pwd -W | sed 's/\//\\/g')
-    # cmd //C mklink /D "$DIST_PATH\\model" "$MODEL_PATH"
-    ln -s $(pwd)/model $(pwd)/dist/model
+if [ -d "./model" ]; then
+  if $DEV_MODE; then
+    if [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+      # DIST_PATH=$(cd dist && pwd -W | sed 's/\//\\/g')
+      # MODEL_PATH=$(cd model && pwd -W | sed 's/\//\\/g')
+      # cmd //C mklink /D "$DIST_PATH\\model" "$MODEL_PATH"
+      ln -s $(pwd)/model $(pwd)/dist/model
+    else
+      ln -s $(pwd)/model $(pwd)/dist/model
+    fi
   else
-    ln -s $(pwd)/model $(pwd)/dist/model
+    cp -r ./model ./dist/
   fi
-else
-  cp -r ./model ./dist/
 fi
 
 echo "[BUILD] Copying third-party libraries..."
