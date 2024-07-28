@@ -1,0 +1,64 @@
+name: build
+run-name: build and upload releases
+
+on:
+  push:
+    tags:        
+      - 'v[0-9]+.[0-9]+.[0-9]+'  
+
+jobs:
+  check-bats-version:
+    runs-on: windows-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.22.5'
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run build script in Ubuntu container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ubuntu:latest
+          options: --entrypoint "/bin/bash"
+          run: |
+            apt-get update
+            apt-get install -y build-essential
+            sh scripts/build.sh
+
+      - name: Zip dist folder
+        run: Compress-Archive -Path .\dist\* -DestinationPath .\dist.zip
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload .zip Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .\dist.zip
+          asset_name: kaption-${{ github.ref }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload start.exe files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .\dist\start.exe
+          asset_name: start-${{ github.ref }}.exe
+          asset_content_type: application/octet-stream
+
