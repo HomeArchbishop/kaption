@@ -48,8 +48,8 @@ func BinaryMessageHandler(msg []byte, tempDirPath string, ffmpegPath string, rec
 	fileIndex, _ := strconv.Atoi(string(msg[32:48]))
 	fileBinary := msg[48:]
 
-	tempFileName := videoHash + "_" + fileHash + "_" + strconv.Itoa(fileIndex)
-	tempWavName := videoHash + "_" + fileHash + "_" + strconv.Itoa(fileIndex) + ".wav"
+	tempFileName := strconv.Itoa(fileIndex) + "_" + videoHash + "_" + fileHash
+	tempWavName := strconv.Itoa(fileIndex) + "_" + videoHash + "_" + fileHash + ".wav"
 	tempFilePath := filepath.Join(tempDirPath, tempFileName)
 	tempWavPath := filepath.Join(tempDirPath, tempWavName)
 
