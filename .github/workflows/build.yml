@@ -19,15 +19,18 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Run build script in Ubuntu container
-        uses: addnab/docker-run-action@v3
+      - name: Install MSYS2
+        uses: msys2/setup-msys2@v2
         with:
-          image: ubuntu:latest
-          options: --entrypoint "/bin/bash"
-          run: |
-            apt-get update
-            apt-get install -y build-essential
-            sh scripts/build.sh
+          update: true
+          install: git, unzip, zip, tar
+
+      - name: Run build script in Git Bash
+        shell: msys2 {0}
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm base-devel
+          sh scripts/build.sh
 
       - name: Zip dist folder
         run: Compress-Archive -Path .\dist\* -DestinationPath .\dist.zip
