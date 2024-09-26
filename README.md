@@ -130,7 +130,12 @@ A valid message flow can be as below:
 ```
 
 ## Known bugs
-- Inaccurate timestamps in speech recognition.
+- (fixed) Inaccurate timestamps in speech recognition.
+
+- If the video is skipped, Kaption will continue to recognize the content before skipping, resulting in slow recognition.
+
+## TODOs
+- Add "skip" command
 
 ## Licenses
 
